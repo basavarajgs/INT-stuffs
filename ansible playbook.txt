@@ -1,0 +1,30 @@
+- name: Install Jenkins
+  hosts: your_target_server
+  become: yes  # Use sudo to execute tasks as root
+  tasks:
+    - name: Install Java (required by Jenkins)
+      apt:
+        name: openjdk-8-jdk  # or use yum on CentOS
+  
+    - name: Add Jenkins Repository Key
+      apt_key:
+        url: https://pkg.jenkins.io/debian/jenkins.io.key
+      
+    - name: Add Jenkins Repository
+      apt_repository:
+        repo: deb http://pkg.jenkins.io/debian-stable binary/
+      
+    - name: Install Jenkins
+      apt:
+        name: jenkins
+     
+	 - name: Start Jenkins Service
+      systemctl:
+        name: jenkins
+        state: start
+
+    - name: Enable Jenkins Service at Boot
+      systemctl:
+        name: jenkins
+        enabled: yes
+     
